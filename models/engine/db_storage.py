@@ -14,15 +14,18 @@ from sqlalchemy.orm import sessionmaker, scoped_session
 from os import environ as env
 from os import getenv
 
+
+classes = {
+    'BaseModel': BaseModel, 'User': User, 'Place': Place, 'State': State, 'City': City, 'Amenity': Amenity, 'Review': Review
+    }
+
+
 class DBStorage:
     """
         comment
     """
     __engine = None
     __session = None
-    __classdict = {
-    'BaseModel': BaseModel, 'User': User, 'Place': Place, 'State': State, 'City': City, 'Amenity': Amenity, 'Review': Review
-    }
 
     def __init__(self):
         """
@@ -39,10 +42,14 @@ class DBStorage:
         """
             comment
         """
-        if cls:
-            return self.__session.query(self.__classdict[cls]).all()
-        else:
-            return self.__session.query(Base).all()
+        new_dict = {}
+        for clss in classes:
+            if cls is None or cls is classes[clss] or cls is clss:
+                objs = self.__session.query(classes[clss]).all()
+                for obj in objs:
+                    key = obj.__class__.__name__ + '.' + obj.id
+                    new_dict[key] = obj
+        return (new_dict)
 
     def new(self, obj):
         """
