@@ -28,15 +28,14 @@ class FileStorage:
 
     def all(self, cls=None):
         """returns the dictionary __objects"""
-        if cls is not None:
-            if type(cls) == str:
-                cls = eval(cls)
-            cls_dict = {}
-            for k, v in self.__objects.items():
-                if type(v) == cls:
-                    cls_dict[k] = v
-            return cls_dict
-        return self.__objects
+        if cls:
+            temp = {}
+            for key, val in self.__objects.items():
+                if val.__class__.__name__ == cls.__name__:
+                    temp[key] = val
+            return temp
+        else:
+            return self.__objects
 
     def new(self, obj):
         """sets in __objects the obj with key <obj class name>.id"""
@@ -44,12 +43,9 @@ class FileStorage:
 
     def save(self):
         """serializes __objects to the JSON file (path: __file_path)"""
-        with open(FileStorage.__file_path, 'w') as f:
-            temp = {}
-            temp.update(FileStorage.__objects)
-            for key, val in temp.items():
-                temp[key] = val.to_dict()
-            json.dump(temp, f)
+        odict = {o: self.__objects[o].to_dict() for o in self.__objects.keys()}
+        with open(self.__file_path, "w", encoding="utf-8") as f:
+            json.dump(odict, f)
 
     def reload(self):
         """deserializes the JSON file to __objects"""
