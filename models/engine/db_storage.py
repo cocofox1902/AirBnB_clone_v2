@@ -12,6 +12,7 @@ from models.review import Review
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, scoped_session
 from os import environ as env
+from os import getenv
 
 class DBStorage:
     """
@@ -27,13 +28,12 @@ class DBStorage:
         """
             comment
         """
-        self.__engine = create_engine(
-            "mysql+mysqldb://{}:{}@{}:localhost/{}".format(
-                env['HBNB_MYSQL_USER'],
-                env['HBNB_MYSQL_PWD'],
-                env['HBNB_MYSQL_HOST'],
-                env['HBNB_MYSQL_DB']
-            ), pool_pre_ping=True)
+        self.__engine = create_engine("mysql+mysqldb://{}:{}@{}/{}".
+                                      format(getenv("HBNB_MYSQL_USER"),
+                                             getenv("HBNB_MYSQL_PWD"),
+                                             getenv("HBNB_MYSQL_HOST"),
+                                             getenv("HBNB_MYSQL_DB")),
+                                      pool_pre_ping=True)
 
     def all(self, cls=None):
         """

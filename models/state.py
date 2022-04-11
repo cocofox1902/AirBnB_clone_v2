@@ -6,11 +6,12 @@ from sqlalchemy.ext.declarative import declarative_base
 import models
 from models.city import City
 from sqlalchemy.orm import relationship
+from os import getenv
 
 
 class State(BaseModel, Base):
     """ State class """
-    if models.storage_t == 'db':
+    if getenv("HBNB_TYPE_STORAGE") == 'db':
         name = Column(String(60), nullable=False)
         __tablename__ = "states"
         cities = relationship("City", backref="state")
@@ -21,7 +22,7 @@ class State(BaseModel, Base):
         """ instantiates a new state """
         super().__init__(*args, **kwargs)
 
-    if models.storage_t != 'db':
+    if getenv("HBNB_TYPE_STORAGE") != 'db':
         @property
         def cities(self):
             """ returns list all cities"""
