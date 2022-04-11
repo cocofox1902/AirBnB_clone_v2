@@ -2,55 +2,47 @@
 """
     comment
 """
-import sqlalchemy
-from sys import argv
-from sqlalchemy import create_engine
-from models.base_model import BaseModel
-from sqlalchemy.orm import sessionmaker
-import MySQLdb
-import cmd
-from models.base_model import BaseModel
-from models.__init__ import storage
+from models.base_model import BaseModel, Base
 from models.user import User
-from models.place import Place
 from models.state import State
 from models.city import City
 from models.amenity import Amenity
+from models.place import Place
 from models.review import Review
+from sqlalchemy import create_engine
+from sqlalchemy.orm import sessionmaker, scoped_session
+from os import environ as env
 
-class DBStorage():
+class DBStorage:
     """
         comment
     """
     __engine = None
     __session = None
+    __classdict = {
+    'BaseModel': BaseModel, 'User': User, 'Place': Place, 'State': State, 'City': City, 'Amenity': Amenity, 'Review': Review
+    }
 
     def __init__(self):
         """
             comment
         """
-        self.__engine = create_engine('mysql+mysqldb://{}:{}@{}/{}'.format(
-                argv[1], argv[2], 'localhost', 'hbnb_dev'), pool_pre_ping=True)
+        self.__engine = create_engine(
+            "mysql+mysqldb://{}:{}@{}:localhost/{}".format(
+                env['HBNB_MYSQL_USER'],
+                env['HBNB_MYSQL_PWD'],
+                env['HBNB_MYSQL_HOST'],
+                env['HBNB_MYSQL_DB']
+            ), pool_pre_ping=True)
 
-        
     def all(self, cls=None):
         """
             comment
         """
         if cls:
-            result = self.__session.query(cls).all()
-            new_dict = {}
-            for obj in result:
-                key = obj.__class__.__name__ + '.' + obj.id
-                new_dict[key] = obj
-            return new_dict
+            return self.__session.query(self.__classdict[cls]).all()
         else:
-            result = self.__session.query(BaseModel).all()
-            new_dict = {}
-            for obj in result:
-                key = obj.__class__.__name__ + '.' + obj.id
-                new_dict[key] = obj
-            return new_dict
+            return self.__session.query(Base).all()
 
     def new(self, obj):
         """
@@ -70,17 +62,19 @@ class DBStorage():
         """
         if obj:
             self.__session.delete(obj)
-            self.save()
+        else:
+            self.__session.query(Base).delete()
+        self.save()
 
     def reload(self):
         """
             comment
         """
-        BaseModel.__table__.drop(self.__engine)
-        BaseModel.__table__.create(self.__engine)
+        Base.metadata.create_all(self.__engine)
+        self.__session = scoped_session(sessionmaker(bind=self.__engine, expire_on_commit=False))
 
     def close(self):
         """
             comment
         """
-        self.__session.close()
+        self.__session.remove()
