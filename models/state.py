@@ -5,13 +5,15 @@ from sqlalchemy import Column, ForeignKey, String, DateTime
 from sqlalchemy.ext.declarative import declarative_base
 import models
 from models.city import City
+from sqlalchemy.orm import relationship
 
 
 class State(BaseModel, Base):
     """ State class """
     if models.storage_t == 'db':
         name = Column(String(60), nullable=False)
-        __tablename__ = "cities"
+        __tablename__ = "states"
+        cities = relationship("City", backref="state")
     else:
         name = ""
 
