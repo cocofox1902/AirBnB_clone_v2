@@ -116,7 +116,8 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** class doesn't exist **")
             return False
-        for key in obj_dict:
+        for key, value in obj_dict.items():
+            delattr(value, '_sa_instance_state')
             obj_list.append(str(obj_dict[key]))
         print("[", end="")
         print(", ".join(obj_list), end="")
