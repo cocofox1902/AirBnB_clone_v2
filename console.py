@@ -3,6 +3,7 @@
 
 import cmd
 from datetime import datetime
+from pickle import OBJ
 import models
 from models.amenity import Amenity
 from models.base_model import BaseModel
@@ -116,8 +117,8 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** class doesn't exist **")
             return False
-        for key in obj_dict:
-            obj_list.append(str(obj_dict[key]))
+        for key, value in obj_dict.items():
+            obj_list.append(str(value.to_dict()))
         print("[", end="")
         print(", ".join(obj_list), end="")
         print("]")
