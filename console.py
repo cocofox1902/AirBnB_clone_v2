@@ -3,7 +3,6 @@
 
 import cmd
 from datetime import datetime
-from pickle import OBJ
 import models
 from models.amenity import Amenity
 from models.base_model import BaseModel
@@ -117,9 +116,8 @@ class HBNBCommand(cmd.Cmd):
         else:
             print("** class doesn't exist **")
             return False
-        for key, value in obj_dict.items():
-            del value.__dict__['_sa_instance_state']
-            obj_list.append(str(value.__str__()))
+        for key in obj_dict:
+            obj_list.append(str(obj_dict[key]))
         print("[", end="")
         print(", ".join(obj_list), end="")
         print("]")
@@ -161,7 +159,6 @@ class HBNBCommand(cmd.Cmd):
                 print("** instance id missing **")
         else:
             print("** class doesn't exist **")
-
 
 if __name__ == '__main__':
     HBNBCommand().cmdloop()
