@@ -118,7 +118,8 @@ class HBNBCommand(cmd.Cmd):
             print("** class doesn't exist **")
             return False
         for key, value in obj_dict.items():
-            obj_list.append(str(value.to_dict()))
+            del value.__dict__['_sa_instance_state']
+            obj_list.append(str(value.__str__()))
         print("[", end="")
         print(", ".join(obj_list), end="")
         print("]")
