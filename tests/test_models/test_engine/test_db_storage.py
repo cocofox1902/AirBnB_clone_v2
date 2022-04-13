@@ -10,7 +10,7 @@ class TestDBStorageDocs(unittest.TestCase):
     """Tests to check the documentation and style of DBStorage class"""
 
     def test_doc_DBStorage(self):
-        """check for class documentation"""
+        """check class documentation"""
         module_DB = len(DBStorage.__doc__)
         self.assertGreater(module_DB, 0)
 
