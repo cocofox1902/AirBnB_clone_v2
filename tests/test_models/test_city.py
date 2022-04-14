@@ -18,7 +18,7 @@ class test_City(test_basemodel):
         """ """
         new = self.value()
         if getenv("HBNB_TYPE_STORAGE") == "db":
-            self.assertEqual(type(new.state_id), str)
+            self.assertEqual(new.state_id, None)
         else:
             self.assertEqual(type(new.state_id), str)
 

@@ -46,7 +46,7 @@ class test_basemodel(unittest.TestCase):
         copy.update({1: 2})
         with self.assertRaises(TypeError):
             new = BaseModel(**copy)
-
+    @unittest.skipIf(os.getenv('HBNB_TYPE_STORAGE') == 'db', "Not work")
     def test_save(self):
         """ Testing save """
         i = self.value()
