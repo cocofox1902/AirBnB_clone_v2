@@ -22,6 +22,7 @@ if getenv("HBNB_TYPE_STORAGE") == "db":
                                             ondelete='CASCADE'),
                                  primary_key=True))
 
+
 class Place(BaseModel, Base):
     """ A place to stay """
     if getenv("HBNB_TYPE_STORAGE") == "db":
@@ -36,8 +37,10 @@ class Place(BaseModel, Base):
         price_by_night = Column(Integer, default=0, nullable=False)
         latitude = Column(Float)
         longitude = Column(Float)
-        reviews = relationship("Review", backref="Place", cascade="all, delete-orphan")
-        amenities = relationship("Amenity", secondary=place_amenity, viewonly=False)
+        reviews = relationship("Review", backref="Place",
+                               cascade="all, delete-orphan")
+        amenities = relationship("Amenity", secondary=place_amenity,
+                                 viewonly=False)
     else:
         city_id = ""
         user_id = ""

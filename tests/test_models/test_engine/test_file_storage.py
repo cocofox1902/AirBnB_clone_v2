@@ -6,7 +6,8 @@ from models import storage
 import os
 
 
-@unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db", "Only test filestorage")
+@unittest.skipIf(os.getenv("HBNB_TYPE_STORAGE") == "db",
+                 "Only test filestorage")
 class test_fileStorage(unittest.TestCase):
     """ Class to test the file storage method """
 
@@ -22,7 +23,7 @@ class test_fileStorage(unittest.TestCase):
         """ Remove storage file at end of tests """
         try:
             os.remove('file.json')
-        except:
+        except Exception:
             pass
 
     def test_obj_list_empty(self):

@@ -41,11 +41,13 @@ class BaseModel:
                 if key != "__class__":
                     setattr(self, key, value)
             if kwargs.get("created_at", None) and type(self.created_at) is str:
-                self.created_at = datetime.strptime(kwargs["created_at"], "%Y-%m-%dT%H:%M:%S.%f")
+                self.created_at = datetime.strptime(kwargs["created_at"],
+                                                    "%Y-%m-%dT%H:%M:%S.%f")
             else:
                 self.created_at = datetime.now()
             if kwargs.get("updated_at", None) and type(self.updated_at) is str:
-                self.updated_at = datetime.strptime(kwargs["updated_at"], "%Y-%m-%dT%H:%M:%S.%f")
+                self.updated_at = datetime.strptime(kwargs["updated_at"],
+                                                    "%Y-%m-%dT%H:%M:%S.%f")
             else:
                 self.updated_at = datetime.now()
             if kwargs.get("id", None) is None:
@@ -66,11 +68,13 @@ class BaseModel:
         """dict BaseModel"""
         my_dict = self.__dict__.copy()
         if "created_at" in my_dict:
-            my_dict["created_at"] = my_dict["created_at"].strftime("%Y-%m-%dT%H:%M:%S.%f")
+            my_dict["created_at"] = my_dict["created_at"].strftime(
+                                                    "%Y-%m-%dT%H:%M:%S.%f")
         if "updated_at" in my_dict:
-            my_dict["updated_at"] = my_dict["updated_at"].strftime("%Y-%m-%dT%H:%M:%S.%f")
+            my_dict["updated_at"] = my_dict["updated_at"].strftime(
+                                                    "%Y-%m-%dT%H:%M:%S.%f")
         my_dict["__class__"] = self.__class__.__name__
-        if save_fs == None:
+        if save_fs is None:
             if "password" in my_dict:
                 del my_dict["password"]
 
