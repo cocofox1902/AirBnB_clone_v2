@@ -68,12 +68,13 @@ li strong {
 	font-size: 25px;
 	font-weight: bold;
 	margin-bottom: 5px;
-	padding-left: 10px;
+	padding-left: 0px;
 }
 
 ul li ul {
-	padding-top: 20px;
-	padding-bottom: 20px;
+	padding-top: 15px;
+    padding-bottom: 13px;
+    padding-left: 10px;
 }
 
 ul li ul li {
@@ -88,7 +89,7 @@ li {
 }
 
 .popover li {
-	padding-left: 30px;
+	padding-left: 24px;
 }
 
 h2 {
@@ -130,4 +131,8 @@ button {
 
 button:hover {
 	opacity: 90%;
+}
+
+.amenities .popover li {
+	padding-left: 40px;
 }

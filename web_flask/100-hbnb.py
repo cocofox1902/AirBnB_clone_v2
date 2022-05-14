@@ -16,8 +16,6 @@ def hbnb():
     states = storage.all(State)
     amenities = storage.all(Amenity)
     places = storage.all(Place).items()
-    for place in places:
-        print(place[1].__dict__)
     return render_template('100-hbnb.html', states=states,
                            amenities=amenities, places=places)
 
